@@ -8,7 +8,7 @@ app.secret_key = os.urandom(24)  # Secret key for session management
 # Twitch OAuth Details
 CLIENT_ID = "r0sd7izv5d9wcncznweyms52wq0z6k"
 CLIENT_SECRET = "y36nl69gyype6ac433ja02zpqm6mv7"
-REDIRECT_URI = "https://yourapp.up.railway.app/callback"  # Change this after deployment
+REDIRECT_URI = "https://twitch0auth-production.up.railway.app/callback"  # Change this after deployment
 AUTH_URL = "https://id.twitch.tv/oauth2/authorize"
 TOKEN_URL = "https://id.twitch.tv/oauth2/token"
 
