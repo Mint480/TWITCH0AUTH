@@ -1,17 +1,21 @@
 import os
 import requests
 from flask import Flask, redirect, request, session, url_for
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Secret key for session management
+# Load environment variables
+load_dotenv()
 
 # Twitch OAuth Details
-CLIENT_ID = "r0sd7izv5d9wcncznweyms52wq0z6k"
-CLIENT_SECRET = "y36nl69gyype6ac433ja02zpqm6mv7"
-REDIRECT_URI = "https://twitch0auth-production.up.railway.app/callback"  # Change this after deployment
-AUTH_URL = "https://id.twitch.tv/oauth2/authorize"
-TOKEN_URL = "https://id.twitch.tv/oauth2/token"
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+AUTH_URL = os.getenv("AUTH_URL")
+TOKEN_URL = os.getenv("TOKEN_URL")
 
+print(f"Client ID: {CLIENT_ID}")  # Do not print secrets in production
 # Define OAuth scopes (modify if needed)
 SCOPES = "user:read:email"  # Add more scopes if required
 
