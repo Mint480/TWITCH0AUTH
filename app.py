@@ -46,7 +46,7 @@ def callback():
         os.environ["TWITCH_REFRESH_TOKEN"] = refresh_token
 
         # ✅ Redirect to a custom success page instead of Discord
-        return redirect("https://twitch0auth-production.up.railway.app/callback")  
+        return redirect("https://yourusername.github.io/twitch-oauth-success/")  
     else:
         return f"Error: {token_data}", 400  # ❌ Something went wrong
 
