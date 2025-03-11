@@ -53,7 +53,7 @@ def callback():
         os.environ["TWITCH_ACCESS_TOKEN"] = access_token
         os.environ["TWITCH_REFRESH_TOKEN"] = refresh_token
 
-        return f"Success! Access Token: {access_token}<br>Refresh Token: {refresh_token}"
+        return redirect("https://discord.com/app")  # Redirect to Discord app
     else:
         return f"Error: {token_data}", 400  # ❌ Something went wrong
 
