@@ -34,8 +34,14 @@ def callback():
         "grant_type": "authorization_code",
         "redirect_uri": REDIRECT_URI
     }
-    response = requests.post(TOKEN_URL, data=data)
-    token_data = response.json()
+    
+    # Add headers here 👇
+    headers = {
+    "Content-Type": "application/x-www-form-urlencoded"
+}
+
+response = requests.post(TOKEN_URL, data=data, headers=headers)
+token_data = response.json()
 
     if "access_token" in token_data:
         access_token = token_data["access_token"]
@@ -45,8 +51,7 @@ def callback():
         os.environ["TWITCH_ACCESS_TOKEN"] = access_token
         os.environ["TWITCH_REFRESH_TOKEN"] = refresh_token
 
-        # ✅ Redirect to a custom success page instead of Discord
-        return redirect("https://yourusername.github.io/twitch-oauth-success/")  
+        return redirect("https://discord.com/app")  # Redirect to Discord app
     else:
         return f"Error: {token_data}", 400  # ❌ Something went wrong
 
