@@ -19,18 +19,6 @@ print(f"Client ID: {CLIENT_ID}")  # Do not print secrets in production
 # Define OAuth scopes (modify if needed)
 SCOPES = "user:read:email"  # Add more scopes if required
 
-
-@app.route("/")
-def home():
-    """Redirects to Twitch for OAuth authentication."""
-    auth_url = (
-        f"{AUTH_URL}?client_id={CLIENT_ID}"
-        f"&redirect_uri={REDIRECT_URI}"
-        f"&response_type=code&scope={SCOPES}"
-    )
-    return redirect(auth_url)
-
-
 @app.route("/callback")
 def callback():
     """Handles the Twitch OAuth callback and saves refresh token."""
@@ -57,7 +45,8 @@ def callback():
         os.environ["TWITCH_ACCESS_TOKEN"] = access_token
         os.environ["TWITCH_REFRESH_TOKEN"] = refresh_token
 
-        return redirect("https://discord.com/app")  # Redirect to Discord app
+        # ✅ Redirect to a custom success page instead of Discord
+        return redirect("https://twitch0auth-production.up.railway.app/callback")  
     else:
         return f"Error: {token_data}", 400  # ❌ Something went wrong
 
