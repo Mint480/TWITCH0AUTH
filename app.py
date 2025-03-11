@@ -8,12 +8,14 @@ app.secret_key = os.urandom(24)  # Secret key for session management
 # Load environment variables
 load_dotenv()
 
+print(f"Using TOKEN_URL: {TOKEN_URL}")
+
 # Twitch OAuth Details
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = os.getenv("REDIRECT_URI")
 AUTH_URL = os.getenv("AUTH_URL")
-TOKEN_URL = os.getenv("TOKEN_URL")
+TOKEN_URL = os.getenv("TOKEN_URL").strip()  # Remove extra spaces
 
 print(f"Client ID: {CLIENT_ID}")  # Do not print secrets in production
 # Define OAuth scopes (modify if needed)
@@ -21,12 +23,12 @@ SCOPES = "user:read:email"  # Add more scopes if required
 
 @app.route("/callback")
 def callback():
-    """Handles the Twitch OAuth callback and saves refresh token."""
     code = request.args.get("code")
     if not code:
-        return "Error: No code provided", 400  # ❌ No code returned
+        return "Error: No code provided", 400
 
-    # Exchange code for access + refresh tokens
+    print(f"Received code: {code}")  # Debugging
+
     data = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
@@ -35,25 +37,24 @@ def callback():
         "redirect_uri": REDIRECT_URI
     }
     
-    # Add headers here 👇
     headers = {
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
+    print("Sending request to:", TOKEN_URL)
+    print("With data:", data)
+
     response = requests.post(TOKEN_URL, data=data, headers=headers)
     token_data = response.json()
 
+    print("Response:", token_data)  # Debugging
+
     if "access_token" in token_data:
-        access_token = token_data["access_token"]
-        refresh_token = token_data["refresh_token"]  # ✅ Store this!
-
-        # Save tokens securely (e.g., database or environment variables)
-        os.environ["TWITCH_ACCESS_TOKEN"] = access_token
-        os.environ["TWITCH_REFRESH_TOKEN"] = refresh_token
-
-        return redirect("https://discord.com/app")  # Redirect to Discord app
+        os.environ["TWITCH_ACCESS_TOKEN"] = token_data["access_token"]
+        os.environ["TWITCH_REFRESH_TOKEN"] = token_data["refresh_token"]
+        return redirect("https://discord.com/app")
     else:
-        return f"Error: {token_data}", 400  # ❌ Something went wrong
+        return f"Error: {token_data}", 400
 
 def refresh_access_token():
     """Refreshes the Twitch access token when it expires."""
