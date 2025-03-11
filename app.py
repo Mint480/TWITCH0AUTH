@@ -37,11 +37,11 @@ def callback():
     
     # Add headers here 👇
     headers = {
-    "Content-Type": "application/x-www-form-urlencoded"
-}
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
 
-response = requests.post(TOKEN_URL, data=data, headers=headers)
-token_data = response.json()
+    response = requests.post(TOKEN_URL, data=data, headers=headers)
+    token_data = response.json()
 
     if "access_token" in token_data:
         access_token = token_data["access_token"]
