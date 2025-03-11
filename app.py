@@ -15,7 +15,7 @@ REDIRECT_URI = os.getenv("REDIRECT_URI")
 AUTH_URL = os.getenv("AUTH_URL")
 TOKEN_URL = os.getenv("TOKEN_URL").strip()  # Remove extra spaces
 
-print(f"Using TOKEN_URL: {TOKEN_URL}")
+print(f"TOKEN_URL: '{TOKEN_URL}'")  # Debugging
 
 print(f"Client ID: {CLIENT_ID}")  # Do not print secrets in production
 # Define OAuth scopes (modify if needed)
